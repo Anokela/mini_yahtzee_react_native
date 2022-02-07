@@ -8,9 +8,11 @@ let spot = ['','numeric-1-circle', 'numeric-2-circle', 'numeric-3-circle', 'nume
 let board = [];
 const NBR_OF_THROWS = 3;
 const NBR_OF_DICES = 5;
+const NBR_OF_ROUNDS = 6;
 
 export default function Gameboard() {
     const [nbrOfThrowsLeft, setnbrOfThrowsLeft] = useState(NBR_OF_THROWS);
+    const [nbrOfRoundsLeft, setnbrOfRoundsLeft] = useState(NBR_OF_ROUNDS);
     const [status, setStatus] = useState('');
     const [bonusStatus, setBonusStatus] = useState('You are 63 points away from bonus');
     const [totalPoints, setTotalPoints] = useState(60);
