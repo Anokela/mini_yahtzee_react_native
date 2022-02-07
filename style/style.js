@@ -3,7 +3,8 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    justifyContent: 'center',
   },
   header: {
     marginTop: 30,
@@ -64,5 +65,20 @@ export default StyleSheet.create({
   buttonText: {
     color:"#2B2B52",
     fontSize: 20
-  }
+  },
+  grid: {
+    alignItems: 'center',
+  },
+  skill: {
+    marginTop: 35,
+    fontSize: 25,
+  },
+  value: {
+    marginTop: 10,
+    marginBottom: 10,
+    fontSize: 20,
+  },
+  skills: {
+    alignItems: 'center',
+  },
 });
