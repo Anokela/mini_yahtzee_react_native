@@ -50,7 +50,8 @@ export default StyleSheet.create({
     padding: 10
   },
   flex: {
-    flexDirection: "row"
+    flexDirection: "row",
+    justifyContent: 'center',
   },
   button: {
     margin: 30,
@@ -60,7 +61,7 @@ export default StyleSheet.create({
     width: 150,
     borderRadius: 15,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignSelf: 'center',
   },
   buttonText: {
     color:"#2B2B52",
