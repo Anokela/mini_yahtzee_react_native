@@ -10,11 +10,9 @@ let board = [];
 const SPOTS = [{id: 1, icon:'numeric-1-circle'}, {id: 2, icon: 'numeric-2-circle'}, {id: 3, icon: 'numeric-3-circle'}, {id: 4, icon: 'numeric-4-circle'}, {id: 5, icon: 'numeric-5-circle'}, {id: 6, icon: 'numeric-6-circle'}];
 const NBR_OF_THROWS = 3;
 const NBR_OF_DICES = 5;
-const NBR_OF_ROUNDS = 6;
 
 export default function Gameboard() {
     const [nbrOfThrowsLeft, setnbrOfThrowsLeft] = useState(NBR_OF_THROWS);
-    const [nbrOfRoundsLeft, setnbrOfRoundsLeft] = useState(NBR_OF_ROUNDS);
     const [status, setStatus] = useState('Throw dices');
     const [bonusStatus, setBonusStatus] = useState('You are  63 points away from bonus');
     const [totalPoints, setTotalPoints] = useState(0);
@@ -53,7 +51,6 @@ export default function Gameboard() {
     
 
     function selectDice(i) {
-       // console.log(diceValues);
        if(!selected) {
         let dices = [...selectedDices];
        dices[i] = selectedDices[i] ? false :true;
@@ -76,10 +73,10 @@ export default function Gameboard() {
             return;
         }
 
-        else if (selected) {
+        /* else if (nbrOfThrowsLeft > 0 && selected) {
             setStatus('You already selected points for this turn');
             return;
-        }
+        } */
 
         else {
             let array = [...points];
@@ -95,7 +92,6 @@ export default function Gameboard() {
                 }
             array[i]= sum;
             setStatus('Throw dices');
-            setnbrOfRoundsLeft(nbrOfRoundsLeft - 1);
             setPoints(array);
             calculateTotalPoints(array);
             } /* else {
@@ -126,10 +122,11 @@ export default function Gameboard() {
 
 
     function throwDices() {
-        if (nbrOfRoundsLeft === 0) {
+        if (selectedPoints.every(x => x === true)) {
             startOver();
             return;
         }
+        
         if (nbrOfThrowsLeft === 0 && !selected) {
             setStatus('Select your points before next throw');
             return;
@@ -150,22 +147,21 @@ export default function Gameboard() {
     }
 
     function  checkBonusPoints(totalPoints) {
-        console.log(nbrOfRoundsLeft)
-        if (nbrOfRoundsLeft > 0 && totalPoints < 63 ) {
+        if (!selectedPoints.every(x => x === true) && totalPoints < 63 ) {
             setBonusStatus('You are ' + (63 - totalPoints) + ' points away from bonus');
         }
        
-        if (nbrOfRoundsLeft === 0 && totalPoints < 63) {
+        if (selectedPoints.every(x => x === true) && totalPoints < 63) {
             setBonusStatus ('You are ' + (63 - totalPoints) + ' points away from bonus');
             setnbrOfThrowsLeft(0);
             setStatus('Game over, all points selected');
         }
 
-        if (nbrOfRoundsLeft > 0 && totalPoints >= 63) {
+        if (!selectedPoints.every(x => x === true) && totalPoints >= 63) {
             setBonusStatus('You got the bonus!');
         }
 
-        if (nbrOfRoundsLeft === 0 && totalPoints >= 63) {
+        if (selectedPoints.every(x => x === true) && totalPoints >= 63) {
             setnbrOfThrowsLeft(0);
             setBonusStatus('You got the bonus!');
             setStatus('Game over, all points selected');
@@ -174,7 +170,6 @@ export default function Gameboard() {
 
     function startOver() {
         setnbrOfThrowsLeft(NBR_OF_THROWS);
-        setnbrOfRoundsLeft(NBR_OF_ROUNDS);
         setStatus('');
         setBonusStatus('');
         setTotalPoints(0);
@@ -235,17 +230,15 @@ export default function Gameboard() {
                     <Pressable style={styles.button}
                     onPress={()=> throwDices()}>
                         <Text style={styles.buttonText}>
-                            {nbrOfRoundsLeft === 0 ? 'Start over' : 'Throw dices'}
+                            {selectedPoints.every(x => x === true) ? 'Start over' : 'Throw dices'}
                         </Text>
                     </Pressable>
                 </View>
-                
                 <Text style={styles.gameinfo}>Total: {totalPoints}</Text>
                 <Text style={styles.gameinfo}>{bonusStatus}</Text>
                 <View style={styles.flex}>
                     <Text style={styles.pointsRow}>{spot_count_row}</Text>
                 </View>
-            <Text style={styles.gameinfo}>Rounds left: {nbrOfRoundsLeft}</Text>
         </ScrollView> 
     </View>
   );
