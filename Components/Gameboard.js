@@ -4,8 +4,6 @@ import {MaterialCommunityIcons} from '@expo/vector-icons';
 import { Col, Grid } from "react-native-easy-grid";
 import styles from '../style/style';
 
-//
- 
 let board = [];
 const SPOTS = [{id: 1, icon:'numeric-1-circle'}, {id: 2, icon: 'numeric-2-circle'}, {id: 3, icon: 'numeric-3-circle'}, {id: 4, icon: 'numeric-4-circle'}, {id: 5, icon: 'numeric-5-circle'}, {id: 6, icon: 'numeric-6-circle'}];
 const NBR_OF_THROWS = 3;
@@ -34,11 +32,6 @@ export default function Gameboard() {
     }
 
     useEffect(() => {
-        
-        if (nbrOfThrowsLeft < 0) {
-            setnbrOfThrowsLeft(NBR_OF_THROWS - 1);
-        }
-
         if (nbrOfThrowsLeft > 0 && nbrOfThrowsLeft < NBR_OF_THROWS) {
             setStatus('Select and throw dices again');
         }
@@ -46,7 +39,7 @@ export default function Gameboard() {
         if (nbrOfThrowsLeft === 0) {
             setStatus('Select your points');
         }
-        checkBonusPoints(totalPoints);
+        checkBonusPoints();
     }, [nbrOfThrowsLeft]);
     
 
@@ -73,11 +66,6 @@ export default function Gameboard() {
             return;
         }
 
-        /* else if (nbrOfThrowsLeft > 0 && selected) {
-            setStatus('You already selected points for this turn');
-            return;
-        } */
-
         else {
             let array = [...points];
             let sum= 0;
@@ -94,26 +82,12 @@ export default function Gameboard() {
             setStatus('Throw dices');
             setPoints(array);
             calculateTotalPoints(array);
-            } /* else {
-                array[i] = 0;
-                setPoints(array);
-                setnbrOfRoundsLeft(nbrOfRoundsLeft + 1);
-                setStatus('Select and throw dices again');
-                setnbrOfThrowsLeft(0);
-                calculateTotalPoints(array);
-            } */
+            }
         }
         setSelectedDices(new Array(NBR_OF_DICES).fill(false));
-        setnbrOfThrowsLeft(3);
         setSelected(true);
+        setnbrOfThrowsLeft(NBR_OF_THROWS);
     }
-
-   /*  function validateSelection(i) {
-        if (selectedPoints[i]) {
-            setStatus('You already selected points for ' + SPOTS[i].id);
-            return ;
-        }
-    } */
 
     function calculateTotalPoints(arr) {
         let sum = arr.reduce((a, b) => a + b, 0);
@@ -139,30 +113,26 @@ export default function Gameboard() {
                     board[i] = 'dice-' + randomNumber;
                     dices[i] = randomNumber;
                 }  
-            }   
-        setnbrOfThrowsLeft(nbrOfThrowsLeft - 1);
+            } 
+        let throws = nbrOfThrowsLeft - 1;  
+        setnbrOfThrowsLeft(throws);
         setDiceValues(dices);
         setSelected(false);
         } 
     }
 
-    function  checkBonusPoints(totalPoints) {
+    function  checkBonusPoints() {
         if (!selectedPoints.every(x => x === true) && totalPoints < 63 ) {
             setBonusStatus('You are ' + (63 - totalPoints) + ' points away from bonus');
         }
-       
-        if (selectedPoints.every(x => x === true) && totalPoints < 63) {
-            setBonusStatus ('You are ' + (63 - totalPoints) + ' points away from bonus');
-            setnbrOfThrowsLeft(0);
-            setStatus('Game over, all points selected');
-        }
-
         if (!selectedPoints.every(x => x === true) && totalPoints >= 63) {
             setBonusStatus('You got the bonus!');
         }
-
+        if (selectedPoints.every(x => x === true) && totalPoints < 63) {
+            setBonusStatus ('You were ' + (63 - totalPoints) + ' points away from bonus');
+            setStatus('Game over, all points selected');
+        }
         if (selectedPoints.every(x => x === true) && totalPoints >= 63) {
-            setnbrOfThrowsLeft(0);
             setBonusStatus('You got the bonus!');
             setStatus('Game over, all points selected');
         }
@@ -178,7 +148,7 @@ export default function Gameboard() {
         setSelectedPoints(new Array(6).fill(false));
         setPoints(new Array(6).fill(0));
         setSelected(false);
-        board = new Array(1).fill(null);
+        board = [];
     }
 
     const row = [];
@@ -224,7 +194,7 @@ export default function Gameboard() {
     <View style={styles.gameboard}>
         <ScrollView>
             <View style={styles.flex}><Text>{row}</Text></View>
-                <Text style={styles.gameinfo}>Throws left: {nbrOfThrowsLeft}</Text>
+                <Text style={styles.gameinfo}>Throws left: {!selectedPoints.every(x=>x === true) ? nbrOfThrowsLeft : 0}</Text>
                 <Text style={styles.gameinfo}>{status}</Text>
                 <View style={styles.buttonContainer}>
                     <Pressable style={styles.button}
