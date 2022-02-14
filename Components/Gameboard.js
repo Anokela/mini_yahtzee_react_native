@@ -11,7 +11,7 @@ const NBR_OF_DICES = 5;
 
 export default function Gameboard() {
     const [nbrOfThrowsLeft, setnbrOfThrowsLeft] = useState(NBR_OF_THROWS);
-    const [status, setStatus] = useState('Throw dices');
+    const [status, setStatus] = useState('Throw dices.');
     const [bonusStatus, setBonusStatus] = useState('You are  63 points away from bonus');
     const [totalPoints, setTotalPoints] = useState(0);
     const [selectedDices, setSelectedDices] = 
@@ -33,68 +33,15 @@ export default function Gameboard() {
 
     useEffect(() => {
         if (nbrOfThrowsLeft > 0 && nbrOfThrowsLeft < NBR_OF_THROWS) {
-            setStatus('Select and throw dices again');
+            setStatus('Select and throw dices again.');
         }
 
         if (nbrOfThrowsLeft === 0) {
-            setStatus('Select your points');
+            setStatus('Select your points.');
         }
         checkBonusPoints();
     }, [nbrOfThrowsLeft]);
     
-
-    function selectDice(i) {
-       if(!selected) {
-        let dices = [...selectedDices];
-       dices[i] = selectedDices[i] ? false :true;
-        for(let x = 0; x < diceValues.length; x++) {
-            if(diceValues[i] === diceValues[x]) {
-                dices[x] = selectedDices[i] ? false :true;
-            }
-        }
-        setSelectedDices(dices); 
-       }
-    }
-
-    function selectPoints(i) {
-       if (selectedPoints[i]) {
-            setStatus('You already selected points for ' + SPOTS[i].id);
-            return;
-        }
-        else if (nbrOfThrowsLeft > 0) {
-            setStatus('Throw 3 times before setting points')
-            return;
-        }
-
-        else {
-            let array = [...points];
-            let sum= 0;
-            let selected = [...selectedPoints];
-            selected[i] = selectedPoints[i] ? false : true;
-            setSelectedPoints(selected);
-            if(selected[i]) {
-                for(let x = 0; x < diceValues.length; x++) {
-                    if (diceValues[x] === SPOTS[i].id) {
-                        sum = sum + diceValues[x];  
-                    }
-                }
-            array[i]= sum;
-            setStatus('Throw dices');
-            setPoints(array);
-            calculateTotalPoints(array);
-            }
-        }
-        setSelectedDices(new Array(NBR_OF_DICES).fill(false));
-        setSelected(true);
-        setnbrOfThrowsLeft(NBR_OF_THROWS);
-    }
-
-    function calculateTotalPoints(arr) {
-        let sum = arr.reduce((a, b) => a + b, 0);
-        setTotalPoints(sum);
-    }
-
-
     function throwDices() {
         if (selectedPoints.every(x => x === true)) {
             startOver();
@@ -102,7 +49,7 @@ export default function Gameboard() {
         }
         
         if (nbrOfThrowsLeft === 0 && !selected) {
-            setStatus('Select your points before next throw');
+            setStatus('Select your points before next throw.');
             return;
         }
         else {
@@ -121,6 +68,61 @@ export default function Gameboard() {
         } 
     }
 
+    function selectDice(i) {
+        if (nbrOfThrowsLeft === 3) {
+            setStatus('You have to throw dices first.');
+            return;
+        }
+        if(!selected) {
+            let dices = [...selectedDices];
+        dices[i] = selectedDices[i] ? false :true;
+            for(let x = 0; x < diceValues.length; x++) {
+                if(diceValues[i] === diceValues[x]) {
+                    dices[x] = selectedDices[i] ? false :true;
+                }
+            }
+            setSelectedDices(dices); 
+        }
+    }
+
+    function selectPoints(i) {
+       if (selectedPoints[i]) {
+            setStatus('You already selected points for ' + SPOTS[i].id);
+            return;
+        }
+        else if (nbrOfThrowsLeft > 0) {
+            setStatus('Throw 3 times before setting points.')
+            return;
+        }
+
+        else {
+            let array = [...points];
+            let sum= 0;
+            let selected = [...selectedPoints];
+            selected[i] = selectedPoints[i] ? false : true;
+            setSelectedPoints(selected);
+            if(selected[i]) {
+                for(let x = 0; x < diceValues.length; x++) {
+                    if (diceValues[x] === SPOTS[i].id) {
+                        sum = sum + diceValues[x];  
+                    }
+                }
+            array[i]= sum;
+            setStatus('Throw dices.');
+            setPoints(array);
+            calculateTotalPoints(array);
+            }
+        }
+        setSelectedDices(new Array(NBR_OF_DICES).fill(false));
+        setSelected(true);
+        setnbrOfThrowsLeft(NBR_OF_THROWS);
+    }
+
+    function calculateTotalPoints(arr) {
+        let sum = arr.reduce((a, b) => a + b, 0);
+        setTotalPoints(sum);
+    }
+
     function  checkBonusPoints() {
         if (!selectedPoints.every(x => x === true) && totalPoints < 63 ) {
             setBonusStatus('You are ' + (63 - totalPoints) + ' points away from bonus');
@@ -130,17 +132,17 @@ export default function Gameboard() {
         }
         if (selectedPoints.every(x => x === true) && totalPoints < 63) {
             setBonusStatus ('You were ' + (63 - totalPoints) + ' points away from bonus');
-            setStatus('Game over, all points selected');
+            setStatus('Game over. All points selected.');
         }
         if (selectedPoints.every(x => x === true) && totalPoints >= 63) {
             setBonusStatus('You got the bonus!');
-            setStatus('Game over, all points selected');
+            setStatus('Game over. All points selected.');
         }
     }
 
     function startOver() {
         setnbrOfThrowsLeft(NBR_OF_THROWS);
-        setStatus('');
+        setStatus('Throw dices');
         setBonusStatus('');
         setTotalPoints(0);
         setSelectedDices(new Array(NBR_OF_DICES).fill(false));
