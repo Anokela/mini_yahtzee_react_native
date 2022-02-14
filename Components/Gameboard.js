@@ -204,7 +204,7 @@ export default function Gameboard() {
                         </Text>
                     </Pressable>
                 </View>
-                <Text style={styles.gameinfo}>Total: {totalPoints}</Text>
+                <Text style={styles.totalPoints}>Total: {totalPoints}</Text>
                 <Text style={styles.gameinfo}>{bonusStatus}</Text>
                 <View style={styles.flex}>
                     <Text style={styles.pointsRow}>{spot_count_row}</Text>

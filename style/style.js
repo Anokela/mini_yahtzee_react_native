@@ -9,12 +9,12 @@ export default StyleSheet.create({
   header: {
     marginTop: 30,
     marginBottom: 15,
-    backgroundColor: 'skyblue',
+    backgroundColor: '#0080ff',
     flexDirection: 'row',
   },
   footer: {
     marginTop: 20,
-    backgroundColor: 'skyblue',
+    backgroundColor: '#0080ff',
     flexDirection: 'row'
   },
   title: {
@@ -39,11 +39,15 @@ export default StyleSheet.create({
     justifyContent: 'center'
   },
   gameinfo: {
-    backgroundColor: '#fff',
     textAlign: 'center',
     justifyContent: 'center',
     fontSize: 20,
     marginTop: 10
+  },
+  totalPoints: {
+    textAlign: 'center',
+    justifyContent: 'center',
+    fontSize: 25,
   },
   row: {
     marginTop: 20,
