@@ -53,6 +53,9 @@ export default StyleSheet.create({
     marginTop: 20,
     padding: 10
   },
+  pointsRow: {
+    marginTop: 10,
+  },
   flex: {
     flexDirection: "row",
     justifyContent: 'center',
