@@ -93,6 +93,11 @@ export default function Gameboard() {
 
     // Function for selecting points
     function selectPoints(i) {
+        // if user tries to select points after all points are selected and the game is ended
+        if (selectedPoints.every(x => x === true)) {
+            setStatus('Press Start Over to play again.');
+            return;
+        }
         // if user hasn't thrown dices 3 times
         if (nbrOfThrowsLeft > 0) {
             setStatus('Throw 3 times before setting points.')
