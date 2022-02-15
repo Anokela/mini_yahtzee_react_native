@@ -61,14 +61,14 @@ export default StyleSheet.create({
     margin: 30,
     flexDirection: "row",
     padding: 10,
-    backgroundColor: "#73CED6",
+    backgroundColor: "#0080ff",
     width: 150,
     borderRadius: 15,
     justifyContent: 'center',
     alignSelf: 'center',
   },
   buttonText: {
-    color:"#2B2B52",
+    color:"#FFF",
     fontSize: 20
   },
   grid: {
