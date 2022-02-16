@@ -32,7 +32,7 @@ export default function Gameboard() {
 
     // call useEffect everytime variable nbrOfThrowsLeft changes
     useEffect(() => {
-        // Check whether user still hass to trhow dices before setting the points
+        // Check whether user still hass to throw dices before setting the points
         if (nbrOfThrowsLeft < NBR_OF_THROWS) {
             setStatus('Select and throw dices again.');
         }
