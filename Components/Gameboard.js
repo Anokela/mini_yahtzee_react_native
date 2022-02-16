@@ -4,43 +4,45 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Col, Grid } from "react-native-easy-grid";
 import styles from '../style/style';
 
+// Setting constants for the game
 let board = [];
-const SPOTS = [{ value: 1, icon: 'numeric-1-circle' }, { value: 2, icon: 'numeric-2-circle' }, { value: 3, icon: 'numeric-3-circle' }, { value: 4, icon: 'numeric-4-circle' }, { value: 5, icon: 'numeric-5-circle' }, { value: 6, icon: 'numeric-6-circle' }];
+const SPOTS = [
+    { value: 1, icon: 'numeric-1-circle' },
+    { value: 2, icon: 'numeric-2-circle' },
+    { value: 3, icon: 'numeric-3-circle' }, 
+    { value: 4, icon: 'numeric-4-circle' }, 
+    { value: 5, icon: 'numeric-5-circle' }, 
+    { value: 6, icon: 'numeric-6-circle' }
+];
 const NBR_OF_THROWS = 3;
 const NBR_OF_DICES = 5;
 
 export default function Gameboard() {
-    const [nbrOfThrowsLeft, setnbrOfThrowsLeft] = useState(NBR_OF_THROWS);
-    const [status, setStatus] = useState('Throw dices.');
-    const [bonusStatus, setBonusStatus] = useState('You are  63 points away from bonus');
-    const [totalPoints, setTotalPoints] = useState(0);
-    const [selectedDices, setSelectedDices] =
-        useState(new Array(NBR_OF_DICES).fill(false));
-    const [diceValues, setDiceValues] = useState([]);
+    // state variables
+    const [nbrOfThrowsLeft, setnbrOfThrowsLeft] = useState(NBR_OF_THROWS); // How many throws user has left
+    const [status, setStatus] = useState('Throw dices.'); // Message to the user
+    const [bonusStatus, setBonusStatus] = useState('You are  63 points away from bonus'); // Message for the user what is the status to get the bonus
+    const [totalPoints, setTotalPoints] = useState(0); // Calculated total of selected points
+    const [selectedDices, setSelectedDices] = 
+        useState(new Array(NBR_OF_DICES).fill(false)); // variable to hold data of the selected dices
+    const [diceValues, setDiceValues] = useState([]); // variable to save the values of dices that are thrown
     const [selectedPoints, setSelectedPoints] =
-        useState(new Array(6).fill(false));
-    const [points, setPoints] = useState(new Array(6).fill(0));
+        useState(new Array(6).fill(false)); // variable to hold data of the selected points
+    const [points, setPoints] = useState(new Array(6).fill(0)); // variable to save the sum of spotcounts for each point
 
+    // call useEffect everytime variable nbrOfThrowsLeft changes
     useEffect(() => {
-        if (nbrOfThrowsLeft > 0 && nbrOfThrowsLeft < NBR_OF_THROWS) {
+        // Check whether user still hass to trhow dices before setting the points
+        if (nbrOfThrowsLeft < NBR_OF_THROWS) {
             setStatus('Select and throw dices again.');
         }
-
+        // Check if user has to select points for this turn
         if (nbrOfThrowsLeft === 0) {
             setStatus('Select your points.');
         }
+        // Check if user has gotten the bonus and if game has ended
         checkBonusPoints();
     }, [nbrOfThrowsLeft]);
-
-    // function to set the colors for selected and unselected dice
-    function getDiceColor(i) {
-        return selectedDices[i] ? "black" : "steelblue";
-    }
-
-    // function to set the colors for selected and unselected points
-    function getPointsColor(i) {
-        return selectedPoints[i] ? "black" : "steelblue";
-    }
 
     // function for throwing the dices 
     function throwDices() {
@@ -54,7 +56,9 @@ export default function Gameboard() {
             setStatus('Select your points before next throw.');
             return;
         }
+        // local variable to add values for each dices that are thrown
         let dices = [...diceValues];
+        // local variable to reduce the number of throws left for this turn
         let throws = nbrOfThrowsLeft - 1;
         // All dices that are not selected by the user are thrown and the images and values saved to respective variables 
         for (let i = 0; i < NBR_OF_DICES; i++) {
@@ -64,6 +68,7 @@ export default function Gameboard() {
                 dices[i] = randomNumber;
             }
         }
+        // update the state variables
         setnbrOfThrowsLeft(throws);
         setDiceValues(dices);
     }
@@ -80,15 +85,24 @@ export default function Gameboard() {
             setStatus('You have to throw dices first.');
             return;
         }
-        // When user clicks a dice, all the dice with same spotcount is selected (or unselected if already selected)
+        
+        // create local variables to check which dices are selected
         let dices = [...selectedDices];
+        // Clicking the dice chages the state from true(selected) to false (unselected)
         dices[i] = selectedDices[i] ? false : true;
+        // When user clicks a dice, all the dice with same spotcount is selected (or unselected if already selected)
         for (let x = 0; x < diceValues.length; x++) {
             if (diceValues[i] === diceValues[x]) {
                 dices[x] = selectedDices[i] ? false : true;
             }
         }
+        // update state variable
         setSelectedDices(dices);
+    }
+
+    // function to set the colors for selected and unselected dice if selected black and if unselected steelblue
+    function getDiceColor(i) {
+        return selectedDices[i] ? "black" : "steelblue";
     }
 
     // Function for selecting points
@@ -108,57 +122,77 @@ export default function Gameboard() {
             setStatus('You already selected points for ' + SPOTS[i].value);
             return;
         }
-        // User selects point, values of every dice with respective spotcount is calculated and saved to variable
-        // Totalpoints is calculated
+        // declare local variables
         let array = [...points];
         let sum = 0;
         let selected = [...selectedPoints];
+        // When point is selected that point is chaged from false (unselected) to true (selected)
         selected[i] = selectedPoints[i] ? false : true;
+        // state variable for selected points is updated
         setSelectedPoints(selected);
+        // When user selects point, values of every dice with respective spotcount is calculated and saved to local variable sum
         if (selected[i]) {
             for (let x = 0; x < diceValues.length; x++) {
                 if (diceValues[x] === SPOTS[i].value) {
                     sum = sum + diceValues[x];
                 }
             }
+            // Sum of the dices for the selected point is saved to local variable in the index for respected spotcount
             array[i] = sum;
+            // Statevariable for the points is updated with local variable
             setPoints(array);
+            // Totalpoints is calculated by sending the local variable to the function
             calculateTotalPoints(array);
         }
+        // New turn starts ann proper message to user is set
         setStatus('Throw dices.');
+        // After the points are selected all dices are set to unselected
         setSelectedDices(new Array(NBR_OF_DICES).fill(false));
+        // Update the state variable and set number that user has left for the next turn
         setnbrOfThrowsLeft(NBR_OF_THROWS);
     }
 
+     // function to set the colors for selected and unselected points if selected black and if unselected steelblue
+     function getPointsColor(i) {
+        return selectedPoints[i] ? "black" : "steelblue";
+    }
+
+
     // function to calculate total points from the selected points
     function calculateTotalPoints(arr) {
+        // function takes an array and calcluates the sum of the values in that array and saves in local variable
         let sum = arr.reduce((a, b) => a + b, 0);
+        // state variable is updated with the local variable
         setTotalPoints(sum);
     }
 
     // function to check if user gets the bonus and has selected all the points
     function checkBonusPoints() {
+        // If game hasn't ended and user hasn't got the bonus
         if (!selectedPoints.every(x => x === true) && totalPoints < 63) {
             setBonusStatus('You are ' + (63 - totalPoints) + ' points away from bonus');
         }
+        // If game hasn't ended and user has got the bonus
         if (!selectedPoints.every(x => x === true) && totalPoints >= 63) {
             setBonusStatus('You got the bonus!');
         }
+        // If game has ended and user hasn't got the bonus
         if (selectedPoints.every(x => x === true) && totalPoints < 63) {
             setBonusStatus('You were ' + (63 - totalPoints) + ' points away from bonus');
             setStatus('Game over. All points selected.');
         }
+        // If game has ended and user has got the bonus
         if (selectedPoints.every(x => x === true) && totalPoints >= 63) {
             setBonusStatus('You got the bonus!');
             setStatus('Game over. All points selected.');
         }
     }
 
-    // function to restart the game
+    // function to restart the game.
     function startOver() {
         setnbrOfThrowsLeft(NBR_OF_THROWS);
         setStatus('Throw dices');
-        setBonusStatus('');
+        setBonusStatus('You are  63 points away from bonus');
         setTotalPoints(0);
         setSelectedDices(new Array(NBR_OF_DICES).fill(false));
         setDiceValues([]);
