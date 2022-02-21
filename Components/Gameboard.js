@@ -118,7 +118,7 @@ export default function Gameboard() {
             return;
         }
         // if user has already selected point
-        else if (selectedPoints[i]) {
+        if (selectedPoints[i]) {
             setStatus('You already selected points for ' + SPOTS[i].value);
             return;
         }
