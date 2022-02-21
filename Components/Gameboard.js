@@ -88,9 +88,7 @@ export default function Gameboard() {
 
         // create local variables to check which dices are selected
         let dices = [...selectedDices];
-        // Clicking the dice chages the state from true(selected) to false (unselected)
-        dices[i] = selectedDices[i] ? false : true;
-        // When user clicks a dice, all the dice with same spotcount is selected (or unselected if already selected)
+        // When user clicks a dice, all the dice with same spotcount are selected (or unselected if already selected)
         for (let x = 0; x < diceValues.length; x++) {
             if (diceValues[i] === diceValues[x]) {
                 dices[x] = selectedDices[i] ? false : true;
