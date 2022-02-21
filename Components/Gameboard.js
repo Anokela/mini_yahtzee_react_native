@@ -9,9 +9,9 @@ let board = [];
 const SPOTS = [
     { value: 1, icon: 'numeric-1-circle' },
     { value: 2, icon: 'numeric-2-circle' },
-    { value: 3, icon: 'numeric-3-circle' }, 
-    { value: 4, icon: 'numeric-4-circle' }, 
-    { value: 5, icon: 'numeric-5-circle' }, 
+    { value: 3, icon: 'numeric-3-circle' },
+    { value: 4, icon: 'numeric-4-circle' },
+    { value: 5, icon: 'numeric-5-circle' },
     { value: 6, icon: 'numeric-6-circle' }
 ];
 const NBR_OF_THROWS = 3;
@@ -23,7 +23,7 @@ export default function Gameboard() {
     const [status, setStatus] = useState('Throw dices.'); // Message to the user
     const [bonusStatus, setBonusStatus] = useState('You are  63 points away from bonus'); // Message for the user what is the status to get the bonus
     const [totalPoints, setTotalPoints] = useState(0); // Calculated total of selected points
-    const [selectedDices, setSelectedDices] = 
+    const [selectedDices, setSelectedDices] =
         useState(new Array(NBR_OF_DICES).fill(false)); // variable to hold data of the selected dices
     const [diceValues, setDiceValues] = useState([]); // variable to save the values of dices that are thrown
     const [selectedPoints, setSelectedPoints] =
@@ -85,7 +85,7 @@ export default function Gameboard() {
             setStatus('You have to throw dices first.');
             return;
         }
-        
+
         // create local variables to check which dices are selected
         let dices = [...selectedDices];
         // Clicking the dice chages the state from true(selected) to false (unselected)
@@ -122,29 +122,15 @@ export default function Gameboard() {
             setStatus('You already selected points for ' + SPOTS[i].value);
             return;
         }
-        // declare local variables
-        let array = [...points];
-        let sum = 0;
+        // declare local variable to check the selected point
         let selected = [...selectedPoints];
         // When point is selected that point is chaged from false (unselected) to true (selected)
-        selected[i] = selectedPoints[i] ? false : true;
-        // state variable for selected points is updated
+        selected[i] = true;
+        // state variable for selected points is updated with the local variable
         setSelectedPoints(selected);
-        // When user selects point, values of every dice with respective spotcount is calculated and saved to local variable sum
-        if (selected[i]) {
-            for (let x = 0; x < diceValues.length; x++) {
-                if (diceValues[x] === SPOTS[i].value) {
-                    sum = sum + diceValues[x];
-                }
-            }
-            // Sum of the dices for the selected point is saved to local variable in the index for respected spotcount
-            array[i] = sum;
-            // Statevariable for the points is updated with local variable
-            setPoints(array);
-            // Totalpoints is calculated by sending the local variable to the function
-            calculateTotalPoints(array);
-        }
-        // New turn starts ann proper message to user is set
+        // Function is called to calculate the spot counts of  dices with thes selected point (index of the selected point)
+        checkSpotCount(i);
+        // New turn starts and proper message to user is set
         setStatus('Throw dices.');
         // After the points are selected all dices are set to unselected
         setSelectedDices(new Array(NBR_OF_DICES).fill(false));
@@ -152,11 +138,31 @@ export default function Gameboard() {
         setnbrOfThrowsLeft(NBR_OF_THROWS);
     }
 
-     // function to set the colors for selected and unselected points if selected black and if unselected steelblue
-     function getPointsColor(i) {
+    // function to set the colors for selected and unselected points if selected black and if unselected steelblue
+    function getPointsColor(i) {
         return selectedPoints[i] ? "black" : "steelblue";
     }
 
+    // Function to calculate the spotcounts of dices based on the selected point. Function takes the index of the selected point as parameter
+    function checkSpotCount(i) {
+        // declare local variable to calculate the sum for the dices with selected point
+        let sum = 0;
+        // The values for all the dices are checked
+        for (let x = 0; x < diceValues.length; x++) {
+            // If the value of a dice is equal with the selected point it's added to the sum
+            if (diceValues[x] === SPOTS[i].value) {
+                sum = sum + diceValues[x];
+            }
+        }
+        // local variable is declared to save the sum of dices for the selected point
+        let array = [...points];
+        // Sum is saved to local variable in the index for respected spotcount
+        array[i] = sum;
+        // State variable for the points is updated with local variable
+        setPoints(array);
+        // Totalpoints is calculated by sending the local variable to the function
+        calculateTotalPoints(array);
+    }
 
     // function to calculate total points from the selected points
     function calculateTotalPoints(arr) {
