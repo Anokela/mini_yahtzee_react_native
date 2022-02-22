@@ -127,7 +127,7 @@ export default function Gameboard() {
         // state variable for selected points is updated with the local variable
         setSelectedPoints(selected);
         // Function is called to calculate the spot counts of  dices with thes selected point (index of the selected point)
-        checkSpotCount(i);
+        calculateSpotCountPoints(i);
         // New turn starts and proper message to user is set
         setStatus('Throw dices.');
         // After the points are selected all dices are set to unselected
@@ -142,7 +142,7 @@ export default function Gameboard() {
     }
 
     // Function to calculate the spotcounts of dices based on the selected point. Function takes the index of the selected point as parameter
-    function checkSpotCount(i) {
+    function calculateSpotCountPoints(i) {
         // declare local variable to calculate the sum for the dices with selected point
         let sum = 0;
         // The values for all the dices are checked
