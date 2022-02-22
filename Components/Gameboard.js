@@ -68,7 +68,7 @@ export default function Gameboard() {
                 dices[i] = randomNumber;
             }
         }
-        // update the state variables
+        // update the state variables with local variables
         setnbrOfThrowsLeft(throws);
         setDiceValues(dices);
     }
@@ -210,11 +210,11 @@ export default function Gameboard() {
     for (let i = 0; i < NBR_OF_DICES; i++) {
         row.push(
             <Pressable
-                key={row + i}
+                key={'row' + i}
                 onPress={() => selectDice(i)}>
                 <MaterialCommunityIcons
                     name={board[i]}
-                    key={"row" + i}
+                    key={'dice' + i}
                     size={60}
                     color={getDiceColor(i)}>
                 </MaterialCommunityIcons>
@@ -223,15 +223,15 @@ export default function Gameboard() {
     }
 
     // For rendering the points
-    const spot_count_row = [];
+    const points_row = [];
     for (let i = 0; i < SPOTS.length; i++) {
-        spot_count_row.push(
+        points_row.push(
             <View key={'point' + i} style={styles.skills}>
                 <Text>{points[i]}</Text>
                 <Grid style={styles.grid}>
                     <Col size={80}>
                         <Pressable
-                            key={spot_count_row + i}
+                            key={'points_row' + i}
                             onPress={() => selectPoints(i)}>
                             <MaterialCommunityIcons
                                 name={SPOTS[i].icon}
@@ -263,7 +263,7 @@ export default function Gameboard() {
                 <Text style={styles.totalPoints}>Total: {totalPoints}</Text>
                 <Text style={styles.gameinfo}>{bonusStatus}</Text>
                 <View style={styles.flex}>
-                    <Text style={styles.pointsRow}>{spot_count_row}</Text>
+                    <Text style={styles.pointsRow}>{points_row}</Text>
                 </View>
             </ScrollView>
         </View>
