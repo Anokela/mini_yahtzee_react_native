@@ -27,8 +27,8 @@ export default function Gameboard() {
         useState(new Array(NBR_OF_DICES).fill(false)); // variable to hold data of the selected dices
     const [diceValues, setDiceValues] = useState([]); // variable to save the values of dices that are thrown
     const [selectedPoints, setSelectedPoints] =
-        useState(new Array(6).fill(false)); // variable to hold data of the selected points
-    const [points, setPoints] = useState(new Array(6).fill(0)); // variable to save the sum of spotcounts for each point
+        useState(new Array(SPOTS.length).fill(false)); // variable to hold data of the selected points
+    const [points, setPoints] = useState(new Array(SPOTS.length).fill(0)); // variable to save the sum of spotcounts for each point
 
     // call useEffect everytime variable nbrOfThrowsLeft changes
     useEffect(() => {
@@ -200,8 +200,8 @@ export default function Gameboard() {
         setTotalPoints(0);
         setSelectedDices(new Array(NBR_OF_DICES).fill(false));
         setDiceValues([]);
-        setSelectedPoints(new Array(6).fill(false));
-        setPoints(new Array(6).fill(0));
+        setSelectedPoints(new Array(SPOTS.length).fill(false));
+        setPoints(new Array(SPOTS.length).fill(0));
         board = [];
     }
 
@@ -226,16 +226,16 @@ export default function Gameboard() {
     const points_row = [];
     for (let i = 0; i < SPOTS.length; i++) {
         points_row.push(
-            <View key={'point' + i} style={styles.skills}>
+            <View key={'points_row' + i} style={styles.skills}>
                 <Text>{points[i]}</Text>
                 <Grid style={styles.grid}>
                     <Col size={80}>
                         <Pressable
-                            key={'points_row' + i}
+                            key={'row' + i}
                             onPress={() => selectPoints(i)}>
                             <MaterialCommunityIcons
                                 name={SPOTS[i].icon}
-                                key={"row" + i}
+                                key={"point" + i}
                                 size={55}
                                 color={getPointsColor(i)}>
                             </MaterialCommunityIcons>
