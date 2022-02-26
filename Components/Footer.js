@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <View style={styles.footer}>
       <Text style={styles.author}>
-          Author: Aleksi Nokela
+        Author: Aleksi Nokela
       </Text>
     </View>
   );
