@@ -81,7 +81,7 @@ export default function Gameboard() {
             return;
         }
         // if user tries to select dices before he/she has thrown 3 times
-        if (nbrOfThrowsLeft === 3) {
+        if (nbrOfThrowsLeft === NBR_OF_THROWS) {
             setStatus('You have to throw dices first.');
             return;
         }
@@ -226,7 +226,7 @@ export default function Gameboard() {
     const points_row = [];
     for (let i = 0; i < SPOTS.length; i++) {
         points_row.push(
-            <View key={'points_row' + i} style={styles.skills}>
+            <View key={'points_row' + i} style={styles.grid}>
                 <Text>{points[i]}</Text>
                 <Grid style={styles.grid}>
                     <Col size={80}>

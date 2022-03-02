@@ -77,16 +77,9 @@ export default StyleSheet.create({
   grid: {
     alignItems: 'center',
   },
-  skill: {
-    marginTop: 35,
-    fontSize: 25,
-  },
   value: {
     marginTop: 10,
     marginBottom: 10,
     fontSize: 20,
-  },
-  skills: {
-    alignItems: 'center',
   },
 });
