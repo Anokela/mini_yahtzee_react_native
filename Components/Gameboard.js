@@ -80,7 +80,7 @@ export default function Gameboard() {
             setStatus('Press Start Over to play again.');
             return;
         }
-        // if user tries to select dices before he/she has thrown 3 times
+        // if user tries to select dices after selecting points and before he/she has thrown dices
         if (nbrOfThrowsLeft === NBR_OF_THROWS) {
             setStatus('You have to throw dices first.');
             return;
